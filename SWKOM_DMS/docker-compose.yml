@@ -1,11 +1,25 @@
 services:
   spring-boot-app:
-    build: ./
+    build:
+      context: .
+      dockerfile: Dockerfile
     container_name: spring-boot-server
     ports:
       - "8081:8081"
     environment:
       - SPRING_PROFILES_ACTIVE=prod
+    networks:
+      - spring-boot-network
+
+  nginx:
+    build:
+      context: .
+      dockerfile: Dockerfile-nginx
+    container_name:  nginx-server
+    ports:
+      - "80:80"
+    depends_on:
+      - spring-boot-app
     networks:
       - spring-boot-network
 

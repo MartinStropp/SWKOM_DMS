@@ -14,7 +14,7 @@ services:
   nginx:
     build:
       context: .
-      dockerfile: Dockerfile-nginx
+      dockerfile: nginx/Dockerfile-nginx
     container_name:  nginx
     ports:
       - "80:80"
@@ -22,6 +22,8 @@ services:
       - spring-boot-app
     networks:
       - spring-boot-network
+
+
 
 networks:
   spring-boot-network:

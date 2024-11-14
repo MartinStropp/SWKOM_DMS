@@ -4,5 +4,11 @@ FROM nginx:alpine
 # 2. Copy the NGINX configuration to the container
 COPY nginx.conf /etc/nginx/nginx.conf
 
+# Copy frontend files to the default HTML directory
+COPY web /usr/share/nginx/html
+
 # 3. Expose port 80 for HTTP traffic
 EXPOSE 80
+
+
+

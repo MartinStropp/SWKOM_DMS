@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document Management System</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">DocManager</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="#">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Upload</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Settings</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- Sidebar and Main Content -->
+<div class="container-fluid">
+    <div class="row">
+        <!-- Sidebar -->
+        <div class="col-md-2 bg-light sidebar py-3">
+            <ul class="nav flex-column">
+                <li class="nav-item">
+                    <a class="nav-link active" href="#">All Documents</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Categories</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Favorites</a>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Main Content -->
+        <div class="col-md-10">
+            <div class="container py-4">
+                <h2>Document Management System</h2>
+                <button class="btn btn-primary my-3" onclick="toggleUploadForm()">Upload New Document</button>
+
+                <!-- Document Upload Form (Initially Hidden) -->
+                <div id="upload-form" class="my-4" style="display:none;">
+                    <form id="document-upload-form">
+                        <div class="mb-3">
+                            <label for="file-input" class="form-label">Select Document</label>
+                            <input type="file" class="form-control" id="file-input" required>
+                        </div>
+                        <button type="submit" class="btn btn-success">Upload</button>
+                    </form>
+                </div>
+
+                <!-- Document List -->
+                <div class="list-group" id="document-list">
+                    <!-- Documents will be added dynamically here -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    // Toggle visibility of upload form
+    function toggleUploadForm() {
+        const form = document.getElementById('upload-form');
+        form.style.display = form.style.display === 'none' ? 'block' : 'none';
+    }
+
+    // Upload document to the server
+    document.getElementById('document-upload-form').addEventListener('submit', async function(event) {
+        event.preventDefault();
+
+        const formData = new FormData();
+        const fileInput = document.getElementById('file-input');
+        const file = fileInput.files[0];
+
+        if (!file) {
+            alert('Please select a file to upload.');
+            return;
+        }
+
+        formData.append('file', file);
+
+        try {
+            const apiUrl = "http://localhost:8081/api/documents"; // Adjust this URL as needed
+
+            // Make the POST request to upload the document
+            const response = await fetch(`${apiUrl}/upload`, {
+                method: 'POST',
+                body: formData,
+            });
+            alert("hure");
+            if (!response.ok) {
+                throw new Error("Error uploading document");
+            }
+
+            // Reload the documents after successful upload
+            loadDocuments();
+            alert('Document uploaded successfully!');
+            fileInput.value = ''; // Reset the file input
+        } catch (error) {
+            console.error('Error uploading document:', error);
+            alert("Error uploading document: " + error.message);
+        }
+    });
+
+    // Fetch and display documents from the backend API
+    async function loadDocuments() {
+        try {
+            const apiUrl = "http://localhost:8081/api/documents"; // Adjust this URL as needed
+            const response = await fetch(apiUrl);
+            const documents = await response.json();
+            const documentList = document.getElementById('document-list');
+
+            // Clear any previous list items
+            documentList.innerHTML = '';
+
+            documents.forEach(doc => {
+                const item = document.createElement('a');
+                item.className = 'list-group-item list-group-item-action';
+                item.href = '#';
+                item.textContent = doc.title;  // Assuming the document has a 'title' property
+                documentList.appendChild(item);
+            });
+        } catch (error) {
+            console.error('Error fetching documents:', error);
+        }
+    }
+
+    // Load documents on page load
+    document.addEventListener('DOMContentLoaded', loadDocuments);
+</script>
+</body>
+</html>

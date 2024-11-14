@@ -1,8 +1,9 @@
+version: '3.8'
 services:
   spring-boot-app:
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile_JavaApp
     container_name: spring-boot-server
     ports:
       - "8081:8081"
@@ -14,16 +15,29 @@ services:
   nginx:
     build:
       context: .
-      dockerfile: nginx/Dockerfile-nginx
-    container_name:  nginx
+      dockerfile: Dockerfile-nginx
+    container_name: nginx
     ports:
       - "80:80"
-    depends_on:
-      - spring-boot-app
     networks:
       - spring-boot-network
 
+  postgres_db:
+    image: postgres:15-alpine
+    container_name: postgres_db
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: exampledb
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - spring-boot-network
 
+volumes:
+  pgdata:
 
 networks:
   spring-boot-network:

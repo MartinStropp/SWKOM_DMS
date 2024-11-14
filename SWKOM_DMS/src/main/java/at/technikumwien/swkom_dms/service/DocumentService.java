@@ -1,27 +1,26 @@
 package at.technikumwien.swkom_dms.service;
 
-import at.technikumwien.swkom_dms.dal.Document;
-import at.technikumwien.swkom_dms.dal.DocumentRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import java.util.List;
-
 @Service
 public class DocumentService {
-
     private final DocumentRepository documentRepository;
 
-    @Autowired
     public DocumentService(DocumentRepository documentRepository) {
         this.documentRepository = documentRepository;
     }
 
-    public Document saveDocument(Document document) {
-        return documentRepository.save(document);
+    public String saveDocument(MultipartFile file) throws IOException {
+        Document document = new Document();
+        document.setFileName(file.getOriginalFilename());
+        document.setData(file.getBytes());
+
+        documentRepository.save(document);
+        return "File uploaded successfully";
     }
 
-    public List<Document> getAllDocuments() {
-        return documentRepository.findAll();
+    public List<String> getAllDocumentNames() {
+        return documentRepository.findAll()
+                .stream()
+                .map(Document::getFileName)
+                .collect(Collectors.toList());
     }
 }

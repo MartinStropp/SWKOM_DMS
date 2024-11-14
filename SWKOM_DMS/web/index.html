@@ -138,7 +138,7 @@
                 const item = document.createElement('a');
                 item.className = 'list-group-item list-group-item-action';
                 item.href = '#';
-                item.textContent = doc.title;  // Assuming the document has a 'title' property
+                item.textContent = doc;  // Assuming the document has a 'title' property
                 documentList.appendChild(item);
             });
         } catch (error) {

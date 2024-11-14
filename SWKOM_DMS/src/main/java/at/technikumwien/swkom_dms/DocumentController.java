@@ -10,44 +10,38 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import lombok.Data;
+import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+import java.util.List;
+import java.io.IOException;
+
+
 @RestController
 @RequestMapping("/api/documents")
 public class DocumentController {
 
-    private static final String UPLOAD_DIR = "uploads/";
+    private final DocumentService documentService;
+
+    @Autowired
+    public DocumentController(DocumentService documentService) {
+        this.documentService = documentService;
+    }
 
     @PostMapping("/upload")
     public ResponseEntity<String> uploadDocument(@RequestParam("file") MultipartFile file) {
         try {
-            // Verarbeite die Datei, z.B. speichere sie
-            Path uploadPath = Paths.get("uploads");
-            if (!Files.exists(uploadPath)) {
-                Files.createDirectories(uploadPath);
-            }
-            Path filePath = uploadPath.resolve(file.getOriginalFilename());
-            file.transferTo(filePath);
-
-            return ResponseEntity.ok("File uploaded successfully");
+            String response = documentService.saveDocument(file);
+            return ResponseEntity.ok(response);
         } catch (Exception e) {
             return ResponseEntity.status(500).body("Error uploading file: " + e.getMessage());
         }
     }
 
-
     @GetMapping
     public List<String> getDocuments() {
-        try {
-            Path uploadPath = Paths.get(UPLOAD_DIR);
-            if (Files.exists(uploadPath)) {
-                return Files.walk(uploadPath)
-                        .filter(Files::isRegularFile)
-                        .map(file -> file.getFileName().toString())
-                        .collect(Collectors.toList());
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return Collections.emptyList();
+        return documentService.getAllDocumentNames();
     }
 }
 

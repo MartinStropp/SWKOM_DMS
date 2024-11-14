@@ -16,10 +16,10 @@ public class MainApp implements WebMvcConfigurer {
     // Enable CORS globally for the application
     @Override
     public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/**")  // Enable CORS for all endpoints
-                .allowedOrigins("http://localhost:80")  // Allow frontend URL (replace with actual frontend URL)
+        registry.addMapping("/**")  // CORS für alle Endpunkte aktivieren
+                .allowedOrigins("*")  // Anfragen von allen Ursprüngen zulassen
                 .allowedMethods("GET", "POST", "PUT", "DELETE")
                 .allowedHeaders("*")
-                .allowCredentials(true);
+                .allowCredentials(false);  // Muss auf false gesetzt sein, wenn allowedOrigins auf "*" steht
     }
 }

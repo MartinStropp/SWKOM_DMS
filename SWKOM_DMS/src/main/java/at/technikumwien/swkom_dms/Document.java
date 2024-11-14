@@ -1,10 +1,8 @@
-package at.technikumwien.swkom_dms.entity;
+package at.technikumwien.swkom_dms;
 
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "documents")
-@Data
 public class Document {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -15,15 +13,7 @@ public class Document {
     @Lob  // Large Object (für größere Daten)
     private byte[] data;
 
-    // Getter und Setter
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
+    // Manuelle Getter und Setter
     public String getFileName() {
         return fileName;
     }
@@ -40,4 +30,5 @@ public class Document {
         this.data = data;
     }
 }
+
 

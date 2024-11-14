@@ -1,7 +1,7 @@
-package at.technikumwien.swkom_dms.service;
+package at.technikumwien.swkom_dms.restapi.service;
 
-import at.technikumwien.swkom_dms.Document;
-import at.technikumwien.swkom_dms.repository.DocumentRepository;
+import at.technikumwien.swkom_dms.document.Document;
+import at.technikumwien.swkom_dms.restapi.repository.DocumentRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 

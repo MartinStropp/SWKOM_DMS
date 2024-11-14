@@ -1,6 +1,6 @@
-package at.technikumwien.swkom_dms;
+package at.technikumwien.swkom_dms.document;
 
-import at.technikumwien.swkom_dms.service.DocumentService;
+import at.technikumwien.swkom_dms.restapi.service.DocumentService;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.ResponseEntity;
 

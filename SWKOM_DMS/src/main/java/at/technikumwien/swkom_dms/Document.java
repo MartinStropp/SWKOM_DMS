@@ -1,4 +1,4 @@
-package at.technikumwien.swkom_dms.document;
+package at.technikumwien.swkom_dms;
 
 import jakarta.persistence.*;
 

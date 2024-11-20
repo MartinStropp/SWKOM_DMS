@@ -32,12 +32,28 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - pgdata:/var/lib/postgresql/data
+      - db_data:/var/lib/postgresql/data
     networks:
       - spring-boot-network
 
+  rabbitmq:
+    image: rabbitmq:management
+    container_name: rabbitmq
+    ports:
+      - "5672:5672" # Standard-AMQP-Port
+      - "15672:15672" # Management-Webinterface
+    environment:
+      RABBITMQ_DEFAULT_USER: admin # Standard-Benutzername
+      RABBITMQ_DEFAULT_PASS: admin # Standard-Passwort
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq # Persistente Daten
+    networks:
+      - spring-boot-network
+
+
 volumes:
-  pgdata:
+  db_data:
+  rabbitmq_data:
 
 networks:
   spring-boot-network:

@@ -29,9 +29,9 @@ public class DocumentController {
     @PostMapping("/upload")
     public ResponseEntity<String> uploadDocument(@RequestParam("file") MultipartFile file) {
         try {
-            String response = documentService.saveDocument(file);
-            rabbitMqService.sendToOcrQueue(file.getBytes());
-            return ResponseEntity.ok(response);
+            Document document = documentService.saveDocument(file);
+            rabbitMqService.sendToOcrQueue(document.toJsonString().getBytes(StandardCharsets.UTF_8));
+            return ResponseEntity.ok("File uploaded successfully");
         } catch (Exception e) {
             return ResponseEntity.status(500).body("Error uploading file: " + e.getMessage());
         }

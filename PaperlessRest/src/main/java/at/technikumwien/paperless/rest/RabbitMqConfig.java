@@ -10,7 +10,7 @@ public class RabbitMqConfig {
     // Define the queue where documents will be sent for OCR
     @Bean
     public Queue ocrQueue() {
-        return new Queue("ocr_queue", true); // non-durable queue
+        return new Queue("ocr_queue", true);
     }
 
     @Bean

@@ -18,13 +18,13 @@ public class DocumentService {
         this.documentRepository = documentRepository;
     }
 
-    public String saveDocument(MultipartFile file) throws IOException {
+    public Document saveDocument(MultipartFile file) throws IOException {
         Document document = new Document();
         document.setFileName(file.getOriginalFilename());
         document.setData(file.getBytes());
 
         documentRepository.save(document);
-        return "File uploaded successfully";
+        return document;
     }
 
     public List<String> getAllDocumentNames() {

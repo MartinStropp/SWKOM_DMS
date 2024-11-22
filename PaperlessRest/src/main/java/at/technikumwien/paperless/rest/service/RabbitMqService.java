@@ -17,10 +17,10 @@ public class RabbitMqService {
         this.rabbitTemplate = rabbitTemplate;
     }
 
-    public void sendToOcrQueue(byte[] documentData) {
+    public void sendToOcrQueue(byte[] documentJsonBytes) {
         // Send document data as a message to the OCR queue
-        Message message = MessageBuilder.withBody(documentData)
-                .setContentType("text/plain")
+        Message message = MessageBuilder.withBody(documentJsonBytes)
+                .setContentType("application/json")
                 .build();
         logger.info("Sending message to OCR queue");
         rabbitTemplate.convertAndSend("ocr_queue", message);

@@ -1,4 +1,4 @@
-package at.technikumwien.swkom_dms;
+package at.technikumwien.paperless.rest;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -6,10 +6,10 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @SpringBootApplication
-public class PaperlessRest implements WebMvcConfigurer {
+public class PaperlessRestApplication implements WebMvcConfigurer {
 
     public static void main(String[] args) {
-        SpringApplication.run(PaperlessRest.class, args);
+        SpringApplication.run(PaperlessRestApplication.class, args);
     }
 
     // Enable CORS globally for the application

@@ -1,6 +1,6 @@
-package at.technikumwien.swkom_dms.repository;
+package at.technikumwien.paperless.rest.repository;
 
-import at.technikumwien.swkom_dms.Document;
+import at.technikumwien.paperless.rest.Document;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

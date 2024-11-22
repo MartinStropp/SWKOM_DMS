@@ -1,10 +1,11 @@
-package at.technikumwien.swkom_dms;
+package at.technikumwien.paperless.rest;
 
-import at.technikumwien.swkom_dms.service.DocumentService;
-import at.technikumwien.swkom_dms.service.RabbitMqService;
+import at.technikumwien.paperless.rest.service.DocumentService;
+import at.technikumwien.paperless.rest.service.RabbitMqService;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.ResponseEntity;
 
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +30,7 @@ public class DocumentController {
     public ResponseEntity<String> uploadDocument(@RequestParam("file") MultipartFile file) {
         try {
             String response = documentService.saveDocument(file);
-            rabbitMqService.sendToOcrQueue(new String(file.getBytes(), "UTF-8"));
+            rabbitMqService.sendToOcrQueue(file.getBytes());
             return ResponseEntity.ok(response);
         } catch (Exception e) {
             return ResponseEntity.status(500).body("Error uploading file: " + e.getMessage());

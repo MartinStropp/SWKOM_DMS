@@ -1,13 +1,11 @@
-package at.technikumwien.swkom_dms.service;
+package at.technikumwien.paperless.rest.service;
 
-import at.technikumwien.swkom_dms.Document;
-import at.technikumwien.swkom_dms.repository.DocumentRepository;
-import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import at.technikumwien.paperless.rest.Document;
+import at.technikumwien.paperless.rest.repository.DocumentRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 

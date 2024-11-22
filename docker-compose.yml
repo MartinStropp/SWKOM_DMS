@@ -1,12 +1,22 @@
 version: '3.8'
 services:
-  spring-boot-app:
+  rest_server:
     build:
-      context: .
-      dockerfile: Dockerfile_JavaApp
-    container_name: spring-boot-server
+      dockerfile: Dockerfile_Rest
+    container_name: rest-server
     ports:
       - "8081:8081"
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+    networks:
+      - spring-boot-network
+
+  ocr_server:
+    build:
+      dockerfile: Dockerfile_OCR
+    container_name: ocr-server
+    ports:
+      - "8082:8082"
     environment:
       - SPRING_PROFILES_ACTIVE=prod
     networks:
@@ -37,7 +47,7 @@ services:
       - spring-boot-network
 
   rabbitmq:
-    image: rabbitmq:management
+    image: rabbitmq:3.11-management
     container_name: rabbitmq
     ports:
       - "5672:5672" # Standard-AMQP-Port

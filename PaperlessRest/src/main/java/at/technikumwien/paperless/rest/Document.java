@@ -1,4 +1,4 @@
-package at.technikumwien.swkom_dms;
+package at.technikumwien.paperless.rest;
 
 import jakarta.persistence.*;
 

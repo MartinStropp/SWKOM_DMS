@@ -1,4 +1,4 @@
-package at.technikumwien.swkom_dms;
+package at.technikumwien.paperless.rest;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -6,7 +6,7 @@ import org.springframework.test.context.ActiveProfiles;
 
 @SpringBootTest // Specify the main application class
 @ActiveProfiles("test")
-public class SwkomDmsApplicationTests {
+public class PaperlessRestApplicationTests {
 
     @Test
     void contextLoads() {

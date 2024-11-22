@@ -6,10 +6,10 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @SpringBootApplication
-public class MainApp implements WebMvcConfigurer {
+public class PaperlessRest implements WebMvcConfigurer {
 
     public static void main(String[] args) {
-        SpringApplication.run(MainApp.class, args);
+        SpringApplication.run(PaperlessRest.class, args);
     }
 
     // Enable CORS globally for the application

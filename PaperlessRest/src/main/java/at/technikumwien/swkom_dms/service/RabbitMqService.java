@@ -25,6 +25,5 @@ public class RabbitMqService {
                 .setContentType("text/plain")
                 .build();
         rabbitTemplate.convertAndSend("ocr_queue", message);
-        logger.info("Document sent to OCR queue: {}", documentData);
     }
 }

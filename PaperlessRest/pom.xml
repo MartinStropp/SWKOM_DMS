@@ -9,7 +9,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>at.technikumwien</groupId>
-    <artifactId>SWKOM_DMS</artifactId>
+    <artifactId>PaperlessRest</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>SWKOM_DMS</name>
     <description>SWKOM_DMS</description>

@@ -41,7 +41,7 @@ services:
     container_name: rabbitmq
     ports:
       - "5672:5672" # Standard-AMQP-Port
-      - "15672:15672" # Management-Webinterface
+      - "9093:15672" # Management-Webinterface
     environment:
       RABBITMQ_DEFAULT_USER: admin # Standard-Benutzername
       RABBITMQ_DEFAULT_PASS: admin # Standard-Passwort
@@ -50,10 +50,25 @@ services:
     networks:
       - spring-boot-network
 
+  minio:
+    image: minio/minio:latest
+    container_name: minio
+    ports:
+      - "9000:9000" # S3-compatible API port
+      - "9090:9090" # Web UI port (console)
+    environment:
+      MINIO_ROOT_USER: minioadmin # Set the admin username
+      MINIO_ROOT_PASSWORD: minioadmin # Set the admin password
+    command: server /data --console-address ":9090" # Specify console address
+    volumes:
+      - minio_data:/data
+    networks:
+      - spring-boot-network
 
 volumes:
   db_data:
   rabbitmq_data:
+  minio_data:
 
 networks:
   spring-boot-network:

@@ -30,8 +30,7 @@ public class OCRService {
     public String processOCR(Document document) {
         ITesseract tesseract = new Tesseract();
         tesseract.setDatapath("/usr/share/tessdata"); // Path inside the container
-        tesseract.setLanguage("deu");
-
+        tesseract.setLanguage("eng");
 
         try {
             Path destination = Path.of(document.getFileName()); // Adjust filename and extension as needed
@@ -52,7 +51,7 @@ public class OCRService {
             document.setDataString(processOCR(document));
             // Weiterverarbeitung oder Speicherung des OCR-Ergebnisses
             sendToResultQueue(document);
-            logger.info(document.toJsonString());
+            logger.info(document.getDataString());
         } catch (Exception e) {
             logger.error("error in onMessageRecived: {}", e.getMessage());
         }

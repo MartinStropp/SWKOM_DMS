@@ -4,13 +4,12 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
-@SpringBootTest // Specify the main application class
+@SpringBootTest
 @ActiveProfiles("test")
-public class PaperlessRestApplicationTests {
+class PaperlessRestApplicationTests {
 
     @Test
     void contextLoads() {
-        // Test that the application context loads successfully
     }
-}
 
+}

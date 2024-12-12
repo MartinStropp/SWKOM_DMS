@@ -22,9 +22,11 @@ public class OCRService {
     private static final Logger logger = LoggerFactory.getLogger(OCRService.class);
 
     private final RabbitTemplate rabbitTemplate;
+    private final DocumentElasticsearchRepository documentElasticsearchRepository;
 
-    public OCRService(RabbitTemplate rabbitTemplate) {
+    public OCRService(RabbitTemplate rabbitTemplate, DocumentElasticsearchRepository documentElasticsearchRepository) {
         this.rabbitTemplate = rabbitTemplate;
+        this.documentElasticsearchRepository = documentElasticsearchRepository;
     }
 
     public String processOCR(Document document) {
@@ -51,11 +53,11 @@ public class OCRService {
             document.setDataString(processOCR(document));
             // Weiterverarbeitung oder Speicherung des OCR-Ergebnisses
             sendToResultQueue(document);
+            documentElasticsearchRepository.save(document);
             logger.info(document.getDataString());
         } catch (Exception e) {
             logger.error("error in onMessageRecived: {}", e.getMessage());
         }
-
     }
 
     public void sendToResultQueue(Document document) {

@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.http.ResponseEntity;
 
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,9 +32,9 @@ public class DocumentController {
     public ResponseEntity<String> uploadDocument(@RequestParam("file") MultipartFile file) {
         try {
             logger.info("upload new File");
-            Document document = documentService.saveDocument(file);
+            DocumentJpa documentJpa = documentService.saveDocument(file);
             logger.info("file in db gespeichert");
-            rabbitMqService.sendToOcrQueue(document.toJsonString().getBytes(StandardCharsets.UTF_8));
+            rabbitMqService.sendToOcrQueue(documentJpa.toJsonString().getBytes(StandardCharsets.UTF_8));
             logger.info("file in elasticsearch gespeichert");
             logger.info("file upload erfolgreich");
             return ResponseEntity.ok("File uploaded successfully");
@@ -45,24 +44,25 @@ public class DocumentController {
         }
     }
 
-    @GetMapping("/search")
-    public List<String> getSearchedDocuments(@RequestParam("searchedText") String searchedText) {
-        logger.info("Suchanfrage: \"{}\"", searchedText);
-        List<String> documentNames = new ArrayList<>();
-        documentNames.add("Test daten");
-        try {
-            List<Document> documents = documentService.getSearchedDocuments(searchedText);
-            documentNames = new ArrayList<>();
-            for (Document doc : documents) {
-                documentNames.add(doc.getFileName());
-            }
-            logger.info(documentNames.toString());
-        } catch (Exception e) {
-            logger.error("Error: {}", e.getMessage());
-
-        }
-            return documentNames;
-    }
+//    @GetMapping("/search")
+//    public List<String> getSearchedDocuments(@RequestParam("searchedText") String searchedText) {
+//        logger.info("Suchanfrage: \"{}\"", searchedText);
+//        List<String> documentNames = new ArrayList<>();
+//        documentNames.add("Test daten");
+//        logger.info("test daten added");
+//        try {
+//            List<PaperlessDocument> paperlessDocuments = documentService.getSearchedDocuments(searchedText);
+//            documentNames = new ArrayList<>();
+//            for (PaperlessDocument doc : paperlessDocuments) {
+//                documentNames.add(doc.getFileName());
+//            }
+//            logger.info(documentNames.toString());
+//        } catch (Exception e) {
+//            logger.error("Error: {}", e.getMessage());
+//
+//        }
+//            return documentNames;
+//    }
 
     @GetMapping
     public List<String> getDocuments() {

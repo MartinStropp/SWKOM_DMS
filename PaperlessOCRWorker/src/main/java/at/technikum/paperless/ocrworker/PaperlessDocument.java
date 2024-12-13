@@ -2,10 +2,16 @@ package at.technikum.paperless.ocrworker;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.springframework.data.elasticsearch.annotations.Document;
 
 @Data
-public class Document {
+@AllArgsConstructor
+@NoArgsConstructor
+@Document(indexName = "document")
+public class PaperlessDocument {
     private Long id;
     private String fileName;
     private byte[] data;
@@ -15,6 +21,8 @@ public class Document {
         ObjectMapper objectMapper = new ObjectMapper();
         return objectMapper.writeValueAsString(this);
     }
+
+
 
     // Manuelle Getter
     // public Long getId() {

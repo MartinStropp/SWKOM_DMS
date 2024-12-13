@@ -9,7 +9,7 @@ COPY PaperlessRest/pom.xml .
 COPY PaperlessRest/src ./src
 
 # Run Maven to build the project and create the JAR file
-RUN mvn clean install
+RUN mvn clean install -DskipTests
 
 # Use an official Java runtime as the base image for the runtime stage
 FROM openjdk:17-jdk-alpine

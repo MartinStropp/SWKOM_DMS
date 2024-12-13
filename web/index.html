@@ -57,7 +57,7 @@
 
                 <!-- Document Upload Form (Initially Hidden) -->
                 <div id="upload-form" class="my-4" style="display:none;">
-                    <form id="document-upload-form">
+                    <form id="documentJpa-upload-form">
                         <div class="mb-3">
                             <label for="file-input" class="form-label">Select Document</label>
                             <input type="file" class="form-control" id="file-input" required>
@@ -67,7 +67,7 @@
                 </div>
 
                 <!-- Document List -->
-                <div class="list-group" id="document-list">
+                <div class="list-group" id="documentJpa-list">
                     <!-- Documents will be added dynamically here -->
                 </div>
             </div>
@@ -81,16 +81,16 @@
 <script>
     // Toggle visibility of upload form
     function toggleUploadForm() {
-        const form = document.getElementById('upload-form');
+        const form = documentJpa.getElementById('upload-form');
         form.style.display = form.style.display === 'none' ? 'block' : 'none';
     }
 
-    // Upload document to the server
-    document.getElementById('document-upload-form').addEventListener('submit', async function(event) {
+    // Upload documentJpa to the server
+    documentJpa.getElementById('documentJpa-upload-form').addEventListener('submit', async function(event) {
         event.preventDefault();
 
         const formData = new FormData();
-        const fileInput = document.getElementById('file-input');
+        const fileInput = documentJpa.getElementById('file-input');
         const file = fileInput.files[0];
 
         if (!file) {
@@ -101,53 +101,53 @@
         formData.append('file', file);
 
         try {
-            const apiUrl = "http://localhost:8081/api/documents"; // Adjust this URL as needed
+            const apiUrl = "http://localhost:8081/api/paperlessDocuments"; // Adjust this URL as needed
 
-            // Make the POST request to upload the document
+            // Make the POST request to upload the documentJpa
             const response = await fetch(`${apiUrl}/upload`, {
                 method: 'POST',
                 body: formData,
             });
 
             if (!response.ok) {
-                throw new Error("Error uploading document");
+                throw new Error("Error uploading documentJpa");
             }
 
-            // Reload the documents after successful upload
+            // Reload the paperlessDocuments after successful upload
             await loadDocuments();
             alert('Document uploaded successfully!');
             fileInput.value = ''; // Reset the file input
         } catch (error) {
-            console.error('Error uploading document:', error);
-            alert("Error uploading document: " + error.message);
+            console.error('Error uploading documentJpa:', error);
+            alert("Error uploading documentJpa: " + error.message);
         }
     });
 
-    // Fetch and display documents from the backend API
+    // Fetch and display paperlessDocuments from the backend API
     async function loadDocuments() {
         try {
-            const apiUrl = "http://localhost:8081/api/documents"; // Adjust this URL as needed
+            const apiUrl = "http://localhost:8081/api/paperlessDocuments"; // Adjust this URL as needed
             const response = await fetch(apiUrl);
-            const documents = await response.json();
-            const documentList = document.getElementById('document-list');
+            const paperlessDocuments = await response.json();
+            const documentList = documentJpa.getElementById('documentJpa-list');
 
             // Clear any previous list items
             documentList.innerHTML = '';
 
-            documents.forEach(doc => {
-                const item = document.createElement('a');
+            paperlessDocuments.forEach(doc => {
+                const item = documentJpa.createElement('a');
                 item.className = 'list-group-item list-group-item-action';
                 item.href = '#';
-                item.textContent = doc;  // Assuming the document has a 'title' property
+                item.textContent = doc;  // Assuming the documentJpa has a 'title' property
                 documentList.appendChild(item);
             });
         } catch (error) {
-            console.error('Error fetching documents:', error);
+            console.error('Error fetching paperlessDocuments:', error);
         }
     }
 
-    // Load documents on page load
-    document.addEventListener('DOMContentLoaded', loadDocuments);
+    // Load paperlessDocuments on page load
+    documentJpa.addEventListener('DOMContentLoaded', loadDocuments);
 </script>
 </body>
 </html>

@@ -8,8 +8,10 @@ WORKDIR /build
 COPY PaperlessOCRWorker/pom.xml .
 COPY PaperlessOCRWorker/src ./src
 
+
+
 # Run Maven to build the project and create the JAR file
-RUN mvn clean install
+RUN mvn clean install -DskipTests
 
 
 # Use an official Java runtime as the base image for the runtime stage

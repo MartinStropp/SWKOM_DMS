@@ -5,21 +5,30 @@ services:
     container_name: rest-server
     ports:
       - "8081:8081"
+    depends_on:
+      - ocr_server
     environment:
       - SPRING_PROFILES_ACTIVE=prod
+      - ELASTICSEARCH_HOST=elasticsearch
     networks:
       - spring-boot-network
 
   ocr_server:
     build:
       dockerfile: Dockerfile_OCR
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock  # Mount Docker socket
+    privileged: true  # Required for Docker-in-Docker
     container_name: ocr-server
     ports:
       - "8082:8082"
     environment:
       - SPRING_PROFILES_ACTIVE=prod
+      - ELASTICSEARCH_HOST=elasticsearch
+      - DOCKER_HOST=tcp://host.docker.internal:2375  # Set Docker host
     networks:
       - spring-boot-network
+
 
   nginx:
     build:
@@ -79,7 +88,9 @@ services:
     container_name: elasticsearch
     environment:
       - discovery.type=single-node
-      - xpack.security.enabled=false  # Disable security for testing
+      - cluster.name=paperless  # Set your desired cluster name
+      - ELASTIC_USERNAME=elastic  # Set the default username
+      - ELASTIC_PASSWORD=changeme  # Set the default password
     ports:
       - "9200:9200"
       - "9300:9300"

@@ -1,7 +1,9 @@
 package at.technikumwien.paperless.rest.service;
 
-import at.technikumwien.paperless.rest.Document;
+import at.technikumwien.paperless.rest.repository.elasticsearch.DocumentElasticsearch;
+import at.technikumwien.paperless.rest.DocumentJpa;
 import at.technikumwien.paperless.rest.DocumentController;
+
 import at.technikumwien.paperless.rest.repository.elasticsearch.DocumentElasticsearchRepository;
 import at.technikumwien.paperless.rest.repository.jpa.DocumentJpaRepository;
 import org.slf4j.Logger;
@@ -10,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -24,25 +27,29 @@ public class DocumentService {
         this.documentElasticsearchRepository = documentElasticsearchRepository;
     }
 
-    public Document saveDocument(MultipartFile file) throws IOException {
-        Document document = new Document();
-        document.setFileName(file.getOriginalFilename());
-        document.setData(file.getBytes());
+    public DocumentJpa saveDocument(MultipartFile file) throws IOException {
+        DocumentJpa documentJpa = new DocumentJpa();
+        documentJpa.setFileName(file.getOriginalFilename());
+        documentJpa.setData(file.getBytes());
 
-        documentJpaRepository.save(document);
-        return document;
+        documentJpaRepository.save(documentJpa);
+        return documentJpa;
     }
 
     public List<String> getAllDocumentNames() {
         return documentJpaRepository.findAll()
                 .stream()
-                .map(Document::getFileName)
+                .map(DocumentJpa::getFileName)
                 .collect(Collectors.toList());
     }
 
-    public List<Document> getSearchedDocuments(String searchedText) {
-//        return documentElasticsearchRepository.findByTextContentContaining(searchedText);
-        logger.info("test1");
-        return (List<Document>) documentElasticsearchRepository.findAll();
+    public List<DocumentElasticsearch> getSearchedDocuments(String searchedText) {
+       List<DocumentElasticsearch> list = new ArrayList<>();
+//       documentElasticsearchRepository.findByTextContentContaining(searchedText).
+//               findEach(list::add);
+
+       documentElasticsearchRepository.findAll()
+               .forEach(list::add);
+       return list;
     }
 }

@@ -1,5 +1,6 @@
 package at.technikum.paperless.ocrworker;
 
+import at.technikum.paperless.ocrworker.elasticsearch.DocumentElasticsearchRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import net.sourceforge.tess4j.ITesseract;
 import net.sourceforge.tess4j.Tesseract;
@@ -29,14 +30,14 @@ public class OCRService {
         this.documentElasticsearchRepository = documentElasticsearchRepository;
     }
 
-    public String processOCR(Document document) {
+    public String processOCR(PaperlessDocument paperlessDocument) {
         ITesseract tesseract = new Tesseract();
         tesseract.setDatapath("/usr/share/tessdata"); // Path inside the container
         tesseract.setLanguage("eng");
 
         try {
-            Path destination = Path.of(document.getFileName()); // Adjust filename and extension as needed
-            Files.write(destination, document.getData());
+            Path destination = Path.of(paperlessDocument.getFileName()); // Adjust filename and extension as needed
+            Files.write(destination, paperlessDocument.getData());
             return tesseract.doOCR(new File(destination.toAbsolutePath().toString()));
         } catch (Exception e) {
             logger.error(e.getMessage());
@@ -49,21 +50,21 @@ public class OCRService {
         try {
             logger.info("Received message");
             // Erwartet, dass message den Pfad zum Bild enthält
-            Document document = new ObjectMapper().readValue(message, Document.class);
-            document.setDataString(processOCR(document));
+            PaperlessDocument paperlessDocument = new ObjectMapper().readValue(message, PaperlessDocument.class);
+            paperlessDocument.setDataString(processOCR(paperlessDocument));
             // Weiterverarbeitung oder Speicherung des OCR-Ergebnisses
-            sendToResultQueue(document);
-            documentElasticsearchRepository.save(document);
-            logger.info(document.getDataString());
+            sendToResultQueue(paperlessDocument);
+            documentElasticsearchRepository.save(paperlessDocument);
+            logger.info(paperlessDocument.getDataString());
         } catch (Exception e) {
             logger.error("error in onMessageRecived: {}", e.getMessage());
         }
     }
 
-    public void sendToResultQueue(Document document) {
+    public void sendToResultQueue(PaperlessDocument paperlessDocument) {
         try {
             // Send document data as a message to the OCR queue
-            Message message = MessageBuilder.withBody(document.toJsonString().getBytes(StandardCharsets.UTF_8))
+            Message message = MessageBuilder.withBody(paperlessDocument.toJsonString().getBytes(StandardCharsets.UTF_8))
                     .setContentType("application/json")
                     .build();
             logger.info("Sending message to Result queue");

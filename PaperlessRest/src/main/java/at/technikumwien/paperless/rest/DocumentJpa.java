@@ -6,11 +6,13 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import lombok.Data;
+import lombok.*;
+import org.springframework.data.elasticsearch.annotations.Document;
+
 
 @Data
 @Entity
-public class Document {
+public class DocumentJpa {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO) // oder GenerationType.AUTO
     private Long id;

@@ -1,13 +1,14 @@
 package at.technikumwien.paperless.rest.service;
 
 import at.technikumwien.paperless.rest.repository.elasticsearch.DocumentElasticsearch;
-import at.technikumwien.paperless.rest.DocumentJpa;
+import at.technikumwien.paperless.rest.repository.jpa.DocumentJpa;
 import at.technikumwien.paperless.rest.DocumentController;
 
 import at.technikumwien.paperless.rest.repository.elasticsearch.DocumentElasticsearchRepository;
 import at.technikumwien.paperless.rest.repository.jpa.DocumentJpaRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -22,6 +23,7 @@ public class DocumentService {
     private final DocumentJpaRepository documentJpaRepository;
     private final DocumentElasticsearchRepository documentElasticsearchRepository;
 
+    @Autowired
     public DocumentService(DocumentJpaRepository documentJpaRepository, DocumentElasticsearchRepository documentElasticsearchRepository) {
         this.documentJpaRepository = documentJpaRepository;
         this.documentElasticsearchRepository = documentElasticsearchRepository;

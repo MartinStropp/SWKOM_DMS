@@ -1,5 +1,6 @@
 package at.technikumwien.paperless.rest;
 
+import at.technikumwien.paperless.rest.repository.jpa.DocumentJpa;
 import at.technikumwien.paperless.rest.service.DocumentService;
 import at.technikumwien.paperless.rest.service.RabbitMqService;
 import org.slf4j.Logger;
@@ -22,11 +23,12 @@ public class DocumentController {
     private final RabbitMqService rabbitMqService;
     private final Logger logger = LoggerFactory.getLogger(DocumentController.class);
 
-    @Autowired
-    public DocumentController(DocumentService documentService , RabbitMqService rabbitMqService) {
+
+    public DocumentController(DocumentService documentService, RabbitMqService rabbitMqService) {
         this.documentService = documentService;
         this.rabbitMqService = rabbitMqService;
     }
+
 
     @PostMapping("/upload")
     public ResponseEntity<String> uploadDocument(@RequestParam("file") MultipartFile file) {

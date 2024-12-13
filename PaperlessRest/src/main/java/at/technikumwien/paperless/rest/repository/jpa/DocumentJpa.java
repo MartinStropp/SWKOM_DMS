@@ -1,4 +1,4 @@
-package at.technikumwien.paperless.rest;
+package at.technikumwien.paperless.rest.repository.jpa;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -7,7 +7,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.*;
-import org.springframework.data.elasticsearch.annotations.Document;
 
 
 @Data

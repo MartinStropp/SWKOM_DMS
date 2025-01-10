@@ -17,13 +17,10 @@ services:
       dockerfile: Dockerfile_OCR
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock  # Mount Docker socket
-    privileged: true  # Required for Docker-in-Docker
     ports:
       - "8082:8082"
     environment:
       - SPRING_PROFILES_ACTIVE=prod
-      - ELASTICSEARCH_HOST=elasticsearch
-      - DOCKER_HOST=tcp://host.docker.internal:2375  # Set Docker host
     networks:
       - spring-boot-network
 
@@ -63,6 +60,19 @@ services:
     networks:
       - spring-boot-network
 
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.10.2
+    environment:
+      - discovery.type=single-node
+      - cluster.name=paperless  # Set your desired cluster name
+      - ELASTIC_USERNAME=elastic  # Set the default username
+      - ELASTIC_PASSWORD=password  # Set the default password
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    networks:
+      - spring-boot-network
+
   minio:
     image: minio/minio:latest
     ports:
@@ -74,19 +84,6 @@ services:
     command: server /data --console-address ":9090" # Specify console address
     volumes:
       - minio_data:/data
-    networks:
-      - spring-boot-network
-
-  elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:8.10.2
-    environment:
-      - discovery.type=single-node
-      - cluster.name=paperless  # Set your desired cluster name
-      - ELASTIC_USERNAME=elastic  # Set the default username
-      - ELASTIC_PASSWORD=password  # Set the default password
-    ports:
-      - "9200:9200"
-      - "9300:9300"
     networks:
       - spring-boot-network
 

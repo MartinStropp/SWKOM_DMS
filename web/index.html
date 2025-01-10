@@ -79,18 +79,20 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 <script>
+    const apiUrl = "http://localhost:8081/api/paperlessDocuments"; // Adjust this URL as needed
+
     // Toggle visibility of upload form
     function toggleUploadForm() {
-        const form = documentJpa.getElementById('upload-form');
+        const form = document.getElementById('upload-form');
         form.style.display = form.style.display === 'none' ? 'block' : 'none';
     }
 
-    // Upload documentJpa to the server
-    documentJpa.getElementById('documentJpa-upload-form').addEventListener('submit', async function(event) {
+    // Upload document to the server
+    document.getElementById('document-upload-form').addEventListener('submit', async function(event) {
         event.preventDefault();
 
         const formData = new FormData();
-        const fileInput = documentJpa.getElementById('file-input');
+        const fileInput = document.getElementById('file-input');
         const file = fileInput.files[0];
 
         if (!file) {
@@ -101,53 +103,54 @@
         formData.append('file', file);
 
         try {
-            const apiUrl = "http://localhost:8081/api/paperlessDocuments"; // Adjust this URL as needed
-
-            // Make the POST request to upload the documentJpa
+            // Make the POST request to upload the document
             const response = await fetch(`${apiUrl}/upload`, {
                 method: 'POST',
                 body: formData,
             });
 
             if (!response.ok) {
-                throw new Error("Error uploading documentJpa");
+                throw new Error("Error uploading document");
             }
 
-            // Reload the paperlessDocuments after successful upload
+            // Reload the documents after successful upload
             await loadDocuments();
             alert('Document uploaded successfully!');
             fileInput.value = ''; // Reset the file input
         } catch (error) {
-            console.error('Error uploading documentJpa:', error);
-            alert("Error uploading documentJpa: " + error.message);
+            console.error('Error uploading document:', error);
+            alert("Error uploading document: " + error.message);
         }
     });
 
-    // Fetch and display paperlessDocuments from the backend API
+    // Fetch and display documents from the backend API
     async function loadDocuments() {
         try {
-            const apiUrl = "http://localhost:8081/api/paperlessDocuments"; // Adjust this URL as needed
             const response = await fetch(apiUrl);
-            const paperlessDocuments = await response.json();
-            const documentList = documentJpa.getElementById('documentJpa-list');
+            if (!response.ok) throw new Error("Failed to fetch documents");
+
+            const documents = await response.json();
+            const documentList = document.getElementById('document-list');
 
             // Clear any previous list items
             documentList.innerHTML = '';
 
-            paperlessDocuments.forEach(doc => {
-                const item = documentJpa.createElement('a');
+            // Populate the list with documents
+            documents.forEach(doc => {
+                const item = document.createElement('a');
                 item.className = 'list-group-item list-group-item-action';
                 item.href = '#';
-                item.textContent = doc;  // Assuming the documentJpa has a 'title' property
+                item.textContent = doc.title || 'Untitled Document';  // Adjust based on your API response structure
                 documentList.appendChild(item);
             });
         } catch (error) {
-            console.error('Error fetching paperlessDocuments:', error);
+            console.error('Error fetching documents:', error);
+            alert('Failed to load documents.');
         }
     }
 
-    // Load paperlessDocuments on page load
-    documentJpa.addEventListener('DOMContentLoaded', loadDocuments);
+    // Load documents when the page is loaded
+    document.addEventListener('DOMContentLoaded', loadDocuments);
 </script>
 </body>
 </html>

@@ -5,13 +5,14 @@ import at.technikumwien.paperless.rest.service.DocumentService;
 import at.technikumwien.paperless.rest.service.RabbitMqService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.ResponseEntity;
 
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.web.multipart.MultipartFile;
 
 
@@ -19,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 @RequestMapping("/api/documents")
 public class DocumentController {
 
+    @Autowired
     private final DocumentService documentService;
     private final RabbitMqService rabbitMqService;
     private final Logger logger = LoggerFactory.getLogger(DocumentController.class);
@@ -45,26 +47,6 @@ public class DocumentController {
             return ResponseEntity.status(500).body("Error uploading file: " + e.getMessage());
         }
     }
-
-//    @GetMapping("/search")
-//    public List<String> getSearchedDocuments(@RequestParam("searchedText") String searchedText) {
-//        logger.info("Suchanfrage: \"{}\"", searchedText);
-//        List<String> documentNames = new ArrayList<>();
-//        documentNames.add("Test daten");
-//        logger.info("test daten added");
-//        try {
-//            List<PaperlessDocument> paperlessDocuments = documentService.getSearchedDocuments(searchedText);
-//            documentNames = new ArrayList<>();
-//            for (PaperlessDocument doc : paperlessDocuments) {
-//                documentNames.add(doc.getFileName());
-//            }
-//            logger.info(documentNames.toString());
-//        } catch (Exception e) {
-//            logger.error("Error: {}", e.getMessage());
-//
-//        }
-//            return documentNames;
-//    }
 
     @GetMapping
     public List<String> getDocuments() {

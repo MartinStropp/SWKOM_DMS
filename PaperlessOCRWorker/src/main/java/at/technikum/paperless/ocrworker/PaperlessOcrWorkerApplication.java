@@ -9,8 +9,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class PaperlessOcrWorkerApplication{
 
-    private final static Logger logger = LoggerFactory.getLogger(PaperlessOcrWorkerApplication.class);
-
     public static void main(String[] args) {
 
         SpringApplication.run(PaperlessOcrWorkerApplication.class, args);
